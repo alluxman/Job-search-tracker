@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Search Tracker</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="js/script.js" defer></script>
+</head>
+<body>
+
+    <h1>Job / Intership Search Tracker</h1>
+
+    <h2>Add a new application</h2>
+
+    <form id="applicationForm">
+        <label for="position">Position</label>
+        <input type="text" name="position" id="position">
+
+        <label for="company">Company</label>
+        <input type="text" name="company" id="company">
+
+        <label for="jobLink">Job link</label>
+        <input type="url" name="jobLink" id="jobLink">
+
+        <label for="applicationDeadline">Application deadline</label>
+        <input type="date" name="applicationDeadline" id="applicationDeadline">
+
+        <label for="status">Status</label>
+        <select name="status" id="status">
+            <option value="Interested">Interested</option>
+            <option value="Applied">Applied</option>
+            <option value="Interview">Interview</option>
+            <option value="Rejected">Rejected</option>
+            <option value="Accepted">Accepted</option>
+        </select>
+
+        <button type="submit">Add application</button>
+    </form>
+
+    <h2>My applications</h2>
+
+    <p id="applicationCounter">Total applications: 0</p>
+
+    <div id="applicationList">
+        
+    </div>
+
+</body>
+</html>

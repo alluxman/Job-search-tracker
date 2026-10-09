@@ -1,6 +1,6 @@
 # Job Search Tracker
 
-**Author(s):** Alexandra Manieva
+**Author:** Alexandra Manieva
 
 ## Project plan
 

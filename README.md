@@ -15,6 +15,6 @@ Job Search Tracker is a web application for people who are looking for a job or 
 - Remove vacancies that are no longer relevant.
 - Save vacancies in the browser using localStorage.
 
-### Wireframe / sketch
+### Wireframe
 
-To be added.
+![Wireframe](img/wireframe.png)

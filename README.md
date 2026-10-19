@@ -18,3 +18,9 @@ Job Search Tracker is a web application for people who are looking for a job or 
 ### Wireframe
 
 ![Wireframe](img/wireframe.png)
+
+## Web links
+
+- **Published application:** [To be added](https:)
+- **[GitHub repository:]**(https://github.com/alluxman/Job-search-tracker.git)
+- **Project video presentation:** [To be added](https:)

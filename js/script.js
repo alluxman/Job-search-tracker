@@ -3,46 +3,80 @@ const position = document.querySelector("#position");
 const company = document.querySelector("#company");
 const jobLink = document.querySelector("#jobLink");
 const applicationDeadline = document.querySelector("#applicationDeadline");
-const status = document.querySelector("#status");
-
 const applicationList = document.querySelector("#applicationList");
 const applicationCounter = document.querySelector("#applicationCounter");
 
-applicationForm.addEventListener("submit", function (event) {
-    event.preventDefault();
+[position, company, jobLink].forEach(function (field) {
+    field.addEventListener("invalid", function () {
+        field.classList.add("invalid-field");
+    });
+    field.addEventListener("input", function () {
+        field.classList.remove("invalid-field");
+    });
+});
 
-    const positionValue = position.value;
-    const companyValue = company.value;
-    const jobLinkValue = jobLink.value;
-    const applicationDeadlineValue = applicationDeadline.value;
-    const statusValue = status.value;
+// Saves all applications to local storage
+function saveApplications() {
+    const applications = [];
+    const applicationCards = applicationList.querySelectorAll(".application-card");
 
-    if (positionValue === "" || companyValue === "") {
-        alert("Please enter a position and company!");
-        return;
-    }
+    applicationCards.forEach(function (card) {
+        const deadlineText = card.querySelector(".deadline").textContent;
+        const application = {
+            position: card.querySelector("h3").textContent,
+            company: card.querySelector(".company").textContent,
+            jobLink: card.querySelector("a")?.href || "",
+            applicationDeadline: deadlineText.replace("Application deadline: ", "").replace("Not specified", ""),
+            status: card.querySelector("select").value
+        };
+        applications.push(application);
+    });
 
+    localStorage.setItem("applications", JSON.stringify(applications));
+}
+
+// Creates a card for a new job application
+function createApplicationCard(application) {
     const applicationCard = document.createElement("div");
     applicationCard.classList.add("application-card");
 
     const positionHeading = document.createElement("h3");
-    positionHeading.textContent = positionValue;
+    positionHeading.textContent = application.position;
 
     const companyParagraph = document.createElement("p");
-    companyParagraph.textContent = companyValue;
+    companyParagraph.classList.add("company");
+    companyParagraph.textContent = application.company;
 
     const linkElement = document.createElement("a");
-    linkElement.href = jobLinkValue;
-    linkElement.textContent = "View job advertisement";
-    linkElement.target = "_blank";
-    linkElement.rel = "noopener noreferrer";
+    if (application.jobLink) {
+        linkElement.href = application.jobLink;
+        linkElement.textContent = "View job advertisement";
+        linkElement.target = "_blank";
+        linkElement.rel = "noopener noreferrer";
+    }
 
     const dateParagraph = document.createElement("p");
-    dateParagraph.textContent = "Application deadline: " + applicationDeadlineValue;
+    dateParagraph.classList.add("deadline");
+    dateParagraph.textContent = application.applicationDeadline
+        ? "Application deadline: " + application.applicationDeadline
+        : "Application deadline: Not specified";
+    
+    const statusSelect = document.createElement("select");
+    const statuses = ["Interested", "Applied", "Interview", "Accepted", "Rejected"];
 
-    const statusParagraph = document.createElement("p");
-    statusParagraph.textContent = statusValue;
+    statuses.forEach(function (statusOption) {
+        const option = document.createElement("option");
+        option.value = statusOption;
+        option.textContent = statusOption;
+        statusSelect.append(option);
+    });
 
+    statusSelect.value = statuses.includes(application.status)
+        ? application.status
+        : "Interested";
+    
+    statusSelect.addEventListener("change", saveApplications);
+    
     const deleteButton = document.createElement("button");
     deleteButton.textContent = "Delete";
     deleteButton.type = "button";
@@ -50,19 +84,56 @@ applicationForm.addEventListener("submit", function (event) {
     deleteButton.addEventListener("click", function () {
         applicationCard.remove();
         applicationCounter.textContent = "Total applications: " + applicationList.children.length;
+        saveApplications();
     });
 
-    applicationCard.append(positionHeading, companyParagraph, linkElement, dateParagraph, statusParagraph, deleteButton);
+    applicationCard.append(positionHeading, companyParagraph);
+    
+    if (application.jobLink) {
+        applicationCard.append(linkElement);
+    }
+    applicationCard.append(dateParagraph, statusSelect, deleteButton);
     applicationList.append(applicationCard);
-    applicationCounter.textContent = "Total applications: " + applicationList.children.length;
-    applicationForm.reset();
 
+}
+
+// Validates the form and adds a new application
+applicationForm.addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    const application = {
+        position: position.value.trim(),
+        company: company.value.trim(),
+        jobLink: jobLink.value.trim(),
+        applicationDeadline: applicationDeadline.value,
+        status: "Interested"
+    };
+
+    if (application.position === "" || application.company === "" || application.jobLink === "") {
+        alert("Please enter a position, company and job link!");
+        return;
+    }
+
+    createApplicationCard(application);
+
+    applicationCounter.textContent = "Total applications: " + applicationList.children.length;
+
+    saveApplications();
+    applicationForm.reset();
 });
 
+// Loads saved applications from local storage when the page opens
+function loadApplications() {
+    const savedApplications = localStorage.getItem("applications");
+    if (savedApplications === null) {
+        return;
+    }
 
-    //console.log(positionValue);
-    //console.log(companyValue);
-    //console.log(jobLinkValue);
-    //console.log(applicationDeadlineValue);
-    //console.log(statusValue);
-    //console.log("Form submitted!");
+    const applications = JSON.parse(savedApplications);
+    applications.forEach(function (application) {
+        createApplicationCard(application);
+    });
+    applicationCounter.textContent = "Total applications: " + applicationList.children.length;
+}
+
+loadApplications();

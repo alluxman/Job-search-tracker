@@ -34,6 +34,11 @@ select {
     font-size: 16px;
 }
 
+select {
+    background-color: white;
+    cursor: pointer;
+}
+
 button {
     padding: 12px;
     background-color: #2c3e50;
@@ -49,9 +54,10 @@ button:hover {
 }
 
 #applicationList {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 15px;
+    align-items: start;
 }
 
 .application-card {
@@ -59,6 +65,12 @@ button:hover {
     padding: 20px;
     border-radius: 8px;
     border: 1px solid #d3d2d2;
+    box-shadow: 0 2px 5px #000000;
+    transition: box-shadow 0.2s ease;
+}
+
+.application-card:hover {
+    box-shadow: 0 4px 10 px #3a3a3a;
 }
 
 .application-card h3 {
@@ -68,4 +80,31 @@ button:hover {
 
 .application-card a {
     color: #2980b9;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.application-card a:hover {
+    text-decoration: underline;
+}
+
+.application-card select {
+    margin-right: 10px;
+}
+
+.application-card button {
+    margin-top: 10px;
+}
+
+.invalid-field {
+    border: 2px solid #d93025;
+}
+
+#applicationCounter {
+    font-weight: bold;
+    color: #2c3e50;
+    background-color: white;
+    padding: 12px 15px;
+    border-radius: 6px;
+    border: 1px solid #d3d2d2;
 }

@@ -1,3 +1,4 @@
+// Selects the HTML elements used in the application
 const applicationForm = document.querySelector("#applicationForm");
 const position = document.querySelector("#position");
 const company = document.querySelector("#company");
@@ -6,6 +7,7 @@ const applicationDeadline = document.querySelector("#applicationDeadline");
 const applicationList = document.querySelector("#applicationList");
 const applicationCounter = document.querySelector("#applicationCounter");
 
+// Highlights invalid required fields and removes the highlight when the user starts typing
 [position, company, jobLink].forEach(function (field) {
     field.addEventListener("invalid", function () {
         field.classList.add("invalid-field");
@@ -97,7 +99,7 @@ function createApplicationCard(application) {
 
 }
 
-// Validates the form and adds a new application
+// Validates the form, adds a new application and saves the data
 applicationForm.addEventListener("submit", function (event) {
     event.preventDefault();
 
